@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotation Selector</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Quotation Selector</h1>
+        <form id="quotationForm">
+            
+            <label for="customerId">Customer ID:</label>
+            <input type="number" id="id" name="id" placeholder="Enter ID" required>
+
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="customer">Customer Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter Your Name" required>
+
+            <label for="reference">Reference:</label>
+            <input type="text" id="reference" name="reference" placeholder="Enter reference">
+
+            <label for="place">Place:</label>
+            <input type="text" id="place" name="place" placeholder="Enter place" pattern="([A-Za-z]{4,}|[A-Za-z]{2,}\s[A-Za-z]{2,})" title="Please enter the full place name (e.g., 'New York' or 'San Francisco')." required>
+
+            <label for="subType">SUB Type:</label>
+            <select id="subType" name="subType" required>
+                <option value="">--Select SUB Type--</option>
+                <option value="Quotation">Quotation</option>
+                <option value="Agreement">Agreement</option>
+            </select>
+
+            <label for="liftType">Lift Type:</label>
+            <select id="liftType" name="liftType" required>
+                <option value="">--Select Lift Type--</option>
+                <option value="SS Big Vision Power Operated Door Lift">SS Big Vision Power Operated Door Lift</option>
+                <option value="SS Big Vision Power Operated Door MRL Lift">SS Big Vision Power Operated Door MRL Lift</option>
+                <option value="MS Collapsible Gate">MS Collapsible Gate</option>
+                <option value="MS Small Vision Power Operated Door Lift">MS Small Vision Power Operated Door Lift</option>
+                <option value="MS Swing Door">MS Swing Door</option>
+                <option value="SS SV POD Bed Lift MRL">SS SV POD Bed Lift MRL</option>
+            </select>
+
+            <label for="capacity">Capacity:</label>
+            <select id="capacityType" name="capacityType" required>
+                <option value="">--Select Lift Type--</option>
+                <option value="4 Persons - Maximum Weight Limit - 272 KGs">4 Persons - Maximum Weight Limit - 272 KGs</option>
+                <option value="6 Persons - Maximum Weight Limit - 408 KGs">6 Persons - Maximum Weight Limit - 408 KGs</option>
+                <option value="8 Persons - Maximum Weight Limit - 544 KGs">8 Persons - Maximum Weight Limit - 544 KGs</option>
+                <option value="10 Persons - Maximum Weight Limit - 680 KGs">10 Persons - Maximum Weight Limit - 680 KGs</option>
+                <option value="11 Persons - Maximum Weight Limit - 748 KGs">11 Persons - Maximum Weight Limit - 748 KGs</option>
+                <option value="SS SV POD Bed Lift MRL">SS SV POD Bed Lift MRL</option>
+            </select>
+
+            <label for="price">Price Range:</label>
+            <input type="number" id="price" name="price" placeholder="Enter price range" required>
+            
+            <label for="priceText">Price in Words:</label>
+            <input type="text" id="priceText" name="priceText" placeholder="Price in Words" readonly>
+
+            <label for="text">Additional Features:</label>
+            <input type="text" id="features" name="features" placeholder="Enter your Prefered Features (Optional)">
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+    <script>
+        document.getElementById('place').addEventListener('input', function(event) {
+            const value = event.target.value.trim();
+            const words = value.split(/\s+/); // Split input into words
+            const isSingleWordValid = words.length === 1 && words[0].length >= 4; // Single word must be at least 4 chars
+            const isMultiWordValid = words.length > 1 && words.every(word => word.length >= 2); // Multi-word validation
+            if (!isSingleWordValid && !isMultiWordValid) {
+                event.target.setCustomValidity('Please enter full place name, No shortcuts (e.g., "Vijayawada" or "New York").');
+            } else {
+                event.target.setCustomValidity(''); // Clear error message
+            }
+        });
+    </script>        
+    <script>
+        document.getElementById('quotationForm').addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevent default form submission
+    
+            const formData = new FormData(this);  // Gather form data
+    
+            fetch('/generate-pdf', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'updated.pdf';  // Filename for the downloaded PDF
+                link.click();
+                window.URL.revokeObjectURL(url);  // Clean up the URL object
+            })
+            .catch(error => console.error('Error generating PDF:', error));
+        });
+
+        // Convert price to text and display in the readonly field
+        function numberToWords(num) {
+            const below20 = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+            const tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+            const thousands = ["", "Thousand", "Million", "Billion", "Trillion"];
+
+            if (num === 0) return "Zero";
+
+            let words = "";
+            
+            let i = 0;
+            while (num > 0) {
+                if (num % 1000 !== 0) {
+                    words = helper(num % 1000) + thousands[i] + " " + words;
+                }
+                num = Math.floor(num / 1000);
+                i++;
+            }
+
+            return words.trim() + " Only";
+
+            function helper(num) {
+                if (num === 0) return "";
+                if (num < 20) return below20[num] + " ";
+                if (num < 100) return tens[Math.floor(num / 10)] + " " + helper(num % 10);
+                return below20[Math.floor(num / 100)] + " Hundred " + helper(num % 100);
+            }
+        }
+
+        document.getElementById('price').addEventListener('input', function() {
+            const price = parseInt(this.value, 10);
+            if (!isNaN(price)) {
+                const priceInWords = numberToWords(price);
+                document.getElementById('priceText').value = priceInWords;
+            } else {
+                document.getElementById('priceText').value = '';
+            }
+        });
+    </script>    
+</body>
+</html>

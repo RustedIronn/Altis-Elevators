@@ -1,0 +1,15 @@
+# Ignore Python virtual environment
+venv/
+*.pyc
+__pycache__/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+
+#pdf
+*.pdf
