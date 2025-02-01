@@ -1,43 +1,50 @@
-body {
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #7f34cfee, #4e1ac9);
-    color: #fff;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
     margin: 0;
-    padding: 50px 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #6a11cb, #585d67);
+    color: #fff;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: auto;
-    overflow: auto;
+    padding: 50px 20px;
 }
+
 .container {
-    max-width: 450px;
+    max-width: 500px;
     width: 90%;
-    background: linear-gradient(145deg, #956cdb, #6034c0);
+    background: rgba(255, 255, 255, 0.15);
     padding: 30px;
     border-radius: 15px;
-    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
-    color: #fff;
-}
-form {
-    display: auto;
-    max-width: fit-content;
-    align-items: flex-start;
+    backdrop-filter: blur(10px);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+    margin: 50px 0; /* Adds space above and below */
 }
 
 h1 {
-    text-align: center;
-    margin-bottom: 20px;
     font-size: 2.5em;
-    color: #d8b4ff;
-    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+    color: #fff;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
+
 label {
     display: block;
     margin-bottom: 8px;
-    font-weight: bold;
+    font-weight: 600;
     color: #e0e0e0;
+    text-align: left;
 }
+
 input, select, textarea, button {
     width: 100%;
     padding: 12px;
@@ -46,26 +53,52 @@ input, select, textarea, button {
     border-radius: 8px;
     font-size: 1rem;
     color: #fff;
-    background: #00000060;
+    background: rgba(255, 255, 255, 0.1);
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-in-out;
 }
+
+select option {
+    background: #3e065f;
+    color: #fff;
+}
+
 input:focus, select:focus, textarea:focus {
     outline: none;
-    background-color: rgba(0, 0, 0, 0.877);
-    box-shadow: 0 0 8px #9a67ea;
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
 }
+
 button {
-    background: linear-gradient(90deg, #6a11cb, #a34df0);
+    background: linear-gradient(90deg, #a8e063, #56ab2f);
     font-weight: bold;
     text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-in-out;
 }
+
 button:hover {
-    background: linear-gradient(90deg, #8c47e0, #b66cff);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(90deg, #9be15d, #00b09b);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
 }
+
 textarea {
     resize: none;
+}
+
+/* Subtle animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container {
+    animation: fadeIn 0.8s ease-in-out;
 }
