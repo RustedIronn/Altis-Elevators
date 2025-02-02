@@ -8,7 +8,7 @@ import io
 import random
 import string
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 CORS(app)
 
 # Function to generate a random secret key
@@ -185,5 +185,5 @@ def generate_pdf():
     return send_file(packet, as_attachment=True, download_name="quotation_with_form_data.pdf", mimetype='application/pdf')
 
 
-# Vercel requires an 'app' callable
-from api.index import app
+if __name__ == "__main__":
+    app.run(debug=True)
