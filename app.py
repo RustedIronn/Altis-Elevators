@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file, send_from_directory, session
+from flask import Flask, request, send_file,render_template, send_from_directory, session
 from reportlab.platypus import Table, TableStyle
 from reportlab.lib import colors
 from reportlab.pdfgen import canvas
@@ -23,7 +23,7 @@ def homepage():
     # Check if form data is in session to pre-fill
     name = session.get('name', '')
     date = session.get('date', '')
-    return send_from_directory('templates', 'index.html')  # Adjust HTML to pre-fill fields
+    return render_template('index.html', name=name, date=date)  # Adjust HTML to pre-fill fields
 
 def add_image_watermark(pdf, image_path, width, height):
     """
