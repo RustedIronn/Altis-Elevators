@@ -185,5 +185,5 @@ def generate_pdf():
     return send_file(packet, as_attachment=True, download_name="quotation_with_form_data.pdf", mimetype='application/pdf')
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Vercel requires an 'app' callable
+from api.index import app
