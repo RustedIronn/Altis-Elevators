@@ -23,7 +23,7 @@ def homepage():
     # Check if form data is in session to pre-fill
     name = session.get('name', '')
     date = session.get('date', '')
-    return send_from_directory('static', 'index.html')  # Adjust HTML to pre-fill fields
+    return send_from_directory('templates', 'index.html')  # Adjust HTML to pre-fill fields
 
 def add_image_watermark(pdf, image_path, width, height):
     """
