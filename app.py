@@ -65,7 +65,7 @@ def generate_pdf():
     pdf = canvas.Canvas(packet, pagesize=A4)
     width, height = A4
 
-    image_path = "D:\Employee PDF Generation Backend\logo.png"  # Update this path
+    image_path = "https://i.ibb.co/Z6JrLDty/logo.png"  # Update this path
     add_image_watermark(pdf, image_path, width, height)
 
     # Page 1 - Standard content
